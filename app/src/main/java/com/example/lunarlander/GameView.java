@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -23,6 +24,9 @@ public class GameView extends SurfaceView implements Runnable {
     private Paint paint;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
+
+    float xDown;
+    float yDown;
 
     //Class constructor
     public GameView(Context context) {
@@ -107,9 +111,19 @@ public class GameView extends SurfaceView implements Runnable {
             case MotionEvent.ACTION_UP:
                 //stopping the boosting when screen is released
                 player.stopBoosting();
+                player.stopRotate();
                 break;
             case MotionEvent.ACTION_DOWN:
                 //boosting the space jet when screen is pressed
+                xDown = motionEvent.getX();
+                yDown = motionEvent.getY();
+                int rotate = 0;
+                if(xDown > 500)
+                    rotate = 5;
+                else
+                    rotate = -5;
+
+                player.setRotate(rotate);
                 player.setBoosting();
                 break;
         }

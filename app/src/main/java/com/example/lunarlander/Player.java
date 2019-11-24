@@ -3,6 +3,8 @@ package com.example.lunarlander;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.util.Log;
 
 public class Player {
     //Bitmap to get character from image
@@ -15,6 +17,8 @@ public class Player {
 
     private int maxY;
     private int minY;
+    private int maxX;
+    private int minX;
 
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
@@ -23,8 +27,11 @@ public class Player {
     private int x;
     private int y;
 
+    private float originAngle = 0;
+
     //motion speed of the character
     private int speed = 0;
+    private int rotate = 0;
 
     //constructor
     public Player(Context context) {
@@ -33,7 +40,7 @@ public class Player {
         speed = 1;
 
         //Getting bitmap from drawable resource
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.s_0);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pod);
         boosting = false;
     }
 
@@ -41,11 +48,36 @@ public class Player {
         x = 75;
         y = 50;
         speed = 1;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.s_0);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pod);
+
+        maxX = screenX - bitmap.getWidth();
+        minX = 0;
 
         maxY = screenY - bitmap.getHeight();
         minY = 0;
         boosting = false;
+    }
+
+    public void setRotate(int angle){
+        this.rotate = angle;    //0 = nic, -1 = vlevo, 1 = vpravo
+    }
+    public void stopRotate(){
+        this.rotate = 0;
+    }
+
+    public void rotate(float angle){
+        /*try {
+            Matrix mat = new Matrix();
+            mat.postRotate(angle);
+            Log.d("Width", String.valueOf(bitmap.getWidth()));
+            Bitmap bmp = Bitmap.createBitmap(bitmap, 0, 0, 80, 80, mat, true);
+            bitmap = bmp;
+        }
+        catch (Exception e)
+        {
+            Log.e("Exception", e.getMessage());
+        }*/
+        originAngle+=angle;
     }
 
     public void setBoosting() {
@@ -58,6 +90,12 @@ public class Player {
     //Method to update coordinate of character
     public void update() {
         //if the ship is boosting
+
+        if(rotate != 0)
+        {
+            rotate(rotate);
+        }
+
         if (boosting) {
             //speeding up the ship
             speed += 2;
@@ -74,6 +112,9 @@ public class Player {
         if (speed < MIN_SPEED) {
             speed = MIN_SPEED;
         }
+
+        /*x += -speed * Math.sin(Math.toRadians(originAngle));
+        y += speed * Math.cos(Math.toRadians(originAngle));*/
 
         //moving the ship down
         y -= speed + GRAVITY;
