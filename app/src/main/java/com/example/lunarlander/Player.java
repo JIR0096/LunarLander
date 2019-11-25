@@ -21,6 +21,9 @@ public class Player {
     private int maxX;
     private int minX;
 
+    private double xPosition;
+    private double yPosition;
+
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
 
@@ -75,8 +78,8 @@ public class Player {
             double radians = Math.toRadians(angle);
             double sin = Math.abs(Math.sin(radians));
             double cos = Math.abs(Math.cos(radians));
-            int newWidth = (int)(bitmap.getWidth() * cos + bitmap.getHeight() * sin)-18;
-            int newHeight = (int)(bitmap.getWidth() * sin + bitmap.getHeight() * cos)-19;
+            int newWidth = (int)(bitmap.getWidth() * cos + bitmap.getHeight() * sin);
+            int newHeight = (int)(bitmap.getWidth() * sin + bitmap.getHeight() * cos);
             Log.d("x+width => ", "x+width="+0+"+"+newWidth+"<="+ bitmap.getWidth());
             Log.d("y+width => ", "y+height="+0+"+"+newHeight+"<="+ bitmap.getHeight());
             mat.reset();
@@ -88,7 +91,10 @@ public class Player {
             Log.e("Exception", e.getMessage());
         }
     }
-
+    public void setMove(double x, double y){
+        this.xPosition = x;
+        this.yPosition = y;
+    }
     public void setBoosting() {
         this.boosting = true;
     }
@@ -99,11 +105,21 @@ public class Player {
     //Method to update coordinate of character
     public void update() {
         //if the ship is boosting
+        double b = 0;
+        double c = 0;
+        double alfa = 0;
 
-        if(rotate != 0)
+        if(xPosition != 0 || yPosition != 0)
+        {
+            b = Math.sqrt(Math.abs(Math.pow(x-xPosition,2))+Math.abs(Math.pow(y-yPosition,2)));
+            c = Math.abs(x-xPosition);
+            alfa = Math.acos(b/c);
+        }
+
+        /*if(rotate != 0)
         {
             rotate(rotate);
-        }
+        }*/
 
         if (boosting) {
             //speeding up the ship
@@ -127,6 +143,9 @@ public class Player {
 
         //moving the ship down
         //y -= speed + GRAVITY;
+
+        x += +speed * Math.sin(Math.toRadians(alfa));
+        y += -(speed * Math.cos(Math.toRadians(alfa))+GRAVITY);
 
         //but controlling it also so that it won't go off the screen
         if (y < minY) {

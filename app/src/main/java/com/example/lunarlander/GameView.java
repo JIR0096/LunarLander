@@ -111,19 +111,20 @@ public class GameView extends SurfaceView implements Runnable {
             case MotionEvent.ACTION_UP:
                 //stopping the boosting when screen is released
                 player.stopBoosting();
-                player.stopRotate();
+                player.setMove(0, 0);
+                //player.stopRotate();
                 break;
             case MotionEvent.ACTION_DOWN:
                 //boosting the space jet when screen is pressed
                 xDown = motionEvent.getX();
                 yDown = motionEvent.getY();
                 int rotate = 0;
-                if(xDown > 500)
+                /*if(xDown > 500)
                     rotate = 5;
                 else
-                    rotate = -5;
-
-                player.setRotate(rotate);
+                    rotate = -5;*/
+                player.setMove(xDown, yDown);
+                //player.setRotate(rotate);
                 player.setBoosting();
                 break;
         }
