@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.Image;
 import android.util.Log;
 
 public class Player {
@@ -32,6 +33,7 @@ public class Player {
     //motion speed of the character
     private int speed = 0;
     private int rotate = 0;
+    private Context context;
 
     //constructor
     public Player(Context context) {
@@ -40,7 +42,7 @@ public class Player {
         speed = 1;
 
         //Getting bitmap from drawable resource
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pod);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lander0);
         boosting = false;
     }
 
@@ -48,7 +50,8 @@ public class Player {
         x = 75;
         y = 50;
         speed = 1;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pod);
+        this.context = context;
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lander0);
 
         maxX = screenX - bitmap.getWidth();
         minX = 0;
@@ -66,18 +69,24 @@ public class Player {
     }
 
     public void rotate(float angle){
-        /*try {
+        try {
             Matrix mat = new Matrix();
-            mat.postRotate(angle);
-            Log.d("Width", String.valueOf(bitmap.getWidth()));
-            Bitmap bmp = Bitmap.createBitmap(bitmap, 0, 0, 80, 80, mat, true);
-            bitmap = bmp;
+            originAngle=(originAngle+angle)%360;
+            double radians = Math.toRadians(angle);
+            double sin = Math.abs(Math.sin(radians));
+            double cos = Math.abs(Math.cos(radians));
+            int newWidth = (int)(bitmap.getWidth() * cos + bitmap.getHeight() * sin)-18;
+            int newHeight = (int)(bitmap.getWidth() * sin + bitmap.getHeight() * cos)-19;
+            Log.d("x+width => ", "x+width="+0+"+"+newWidth+"<="+ bitmap.getWidth());
+            Log.d("y+width => ", "y+height="+0+"+"+newHeight+"<="+ bitmap.getHeight());
+            mat.reset();
+            mat.setRotate(originAngle);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0,newWidth, newHeight, mat, true);
         }
         catch (Exception e)
         {
             Log.e("Exception", e.getMessage());
-        }*/
-        originAngle+=angle;
+        }
     }
 
     public void setBoosting() {
@@ -117,7 +126,7 @@ public class Player {
         y += speed * Math.cos(Math.toRadians(originAngle));*/
 
         //moving the ship down
-        y -= speed + GRAVITY;
+        //y -= speed + GRAVITY;
 
         //but controlling it also so that it won't go off the screen
         if (y < minY) {
