@@ -24,6 +24,9 @@ public class Player {
     private double xPosition;
     private double yPosition;
 
+    private boolean moveR;
+    private boolean moveL;
+
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
 
@@ -71,6 +74,11 @@ public class Player {
         this.rotate = 0;
     }
 
+    public void moveSide(int x)
+    {
+        xPosition += x;
+    }
+
     public void rotate(float angle){
         try {
             Matrix mat = new Matrix();
@@ -91,30 +99,18 @@ public class Player {
             Log.e("Exception", e.getMessage());
         }
     }
-    public void setMove(double x, double y){
-        this.xPosition = x;
-        this.yPosition = y;
-    }
     public void setBoosting() {
         this.boosting = true;
     }
     public void stopBoosting() {
         this.boosting = false;
     }
+    public void moveRight(boolean move) {this.moveR = move;}
+    public void moveLeft(boolean move) {this.moveL = move;}
 
     //Method to update coordinate of character
     public void update() {
         //if the ship is boosting
-        double b = 0;
-        double c = 0;
-        double alfa = 0;
-
-        if(xPosition != 0 || yPosition != 0)
-        {
-            b = Math.sqrt(Math.abs(Math.pow(x-xPosition,2))+Math.abs(Math.pow(y-yPosition,2)));
-            c = Math.abs(x-xPosition);
-            alfa = Math.acos(b/c);
-        }
 
         /*if(rotate != 0)
         {
@@ -128,6 +124,11 @@ public class Player {
             //slowing down if not boosting
             speed -= 5;
         }
+
+        if(moveR)
+            xPosition++;
+        if(moveL)
+            xPosition--;
         //controlling the top speed
         if (speed > MAX_SPEED) {
             speed = MAX_SPEED;
@@ -138,14 +139,17 @@ public class Player {
             speed = MIN_SPEED;
         }
 
-        /*x += -speed * Math.sin(Math.toRadians(originAngle));
-        y += speed * Math.cos(Math.toRadians(originAngle));*/
+        x += xPosition;
+
+        if(xPosition >= 0 && !moveR)
+        {
+            xPosition--;
+        }
+        else if(xPosition <= 0 && !moveL)
+            xPosition++;
 
         //moving the ship down
-        //y -= speed + GRAVITY;
-
-        x += +speed * Math.sin(Math.toRadians(alfa));
-        y += -(speed * Math.cos(Math.toRadians(alfa))+GRAVITY);
+        y -= speed + GRAVITY;
 
         //but controlling it also so that it won't go off the screen
         if (y < minY) {
