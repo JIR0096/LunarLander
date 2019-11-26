@@ -24,6 +24,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Paint paint;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
+    private Ground ground;
 
     float xDown;
     float yDown;
@@ -35,6 +36,7 @@ public class GameView extends SurfaceView implements Runnable {
         //initializing player object
         player = new Player(context);
 
+
         //initializing drawing objects
         surfaceHolder = getHolder();
         paint = new Paint();
@@ -45,6 +47,7 @@ public class GameView extends SurfaceView implements Runnable {
         super(context);
 
         player = new Player(context, x,y);
+        ground = new Ground(x,y);
         surfaceHolder = getHolder();
         paint = new Paint();
     }
@@ -52,6 +55,22 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (playing) {
+
+            int status = ground.landed(player.getLanderX(), player.getLanderY());
+            switch (status)
+            {
+                case 1:
+                    Log.w("Landed =>", String.valueOf(status));
+                    pause();
+                    break;
+                case -1:
+                    Log.w("Crashes =>", String.valueOf(status));
+                    pause();
+                    break;
+                default:
+                    Log.d("Not landed =>", String.valueOf(status));
+                    break;
+            }
             //to update the frame
             update();
 
@@ -74,6 +93,7 @@ public class GameView extends SurfaceView implements Runnable {
             canvas = surfaceHolder.lockCanvas();
             canvas.drawColor(Color.BLACK);
             canvas.drawBitmap(player.getBitmap(), player.getX(), player.getY(), paint);
+            ground.draw(canvas);
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
@@ -103,6 +123,10 @@ public class GameView extends SurfaceView implements Runnable {
         playing = true;
         gameThread = new Thread(this);
         gameThread.start();
+    }
+
+    public void landed(){
+
     }
 
     @Override

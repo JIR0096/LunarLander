@@ -108,6 +108,12 @@ public class Player {
     public void moveRight(boolean move) {this.moveR = move;}
     public void moveLeft(boolean move) {this.moveL = move;}
 
+    public void landed(){
+        speed = 0;
+        xPosition = 0;
+
+    }
+
     //Method to update coordinate of character
     public void update() {
         //if the ship is boosting
@@ -129,6 +135,7 @@ public class Player {
             xPosition++;
         if(moveL)
             xPosition--;
+
         //controlling the top speed
         if (speed > MAX_SPEED) {
             speed = MAX_SPEED;
@@ -141,11 +148,9 @@ public class Player {
 
         x += xPosition;
 
-        if(xPosition >= 0 && !moveR)
-        {
+        if(xPosition > 0 && !moveR)
             xPosition--;
-        }
-        else if(xPosition <= 0 && !moveL)
+        else if(xPosition < 0 && !moveL)
             xPosition++;
 
         //moving the ship down
@@ -167,6 +172,9 @@ public class Player {
     public Bitmap getBitmap() {
         return bitmap;
     }
+
+    public int getLanderX(){ return x+bitmap.getWidth();}
+    public int getLanderY(){ return y+bitmap.getHeight();}
 
     public int getX() {
         return x;
