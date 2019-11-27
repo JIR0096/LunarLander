@@ -34,4 +34,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         //starting game activity
         startActivity(new Intent(this, GameActivity.class));
     }
+
+    public void setSettings(View v){
+        startActivity(new Intent(this, SettingActivity.class));
+    }
 }

@@ -37,4 +37,21 @@
         android:layout_marginBottom="285dp"
         android:background="@drawable/highscore" />
 
+    <ImageButton
+        android:id="@+id/buttonSettings"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="119dp"
+        android:layout_marginLeft="119dp"
+        android:layout_marginEnd="116dp"
+        android:layout_marginRight="116dp"
+        android:layout_marginBottom="220dp"
+        android:background="@drawable/settings"
+        android:onClick="setSettings" />
+
 </RelativeLayout>
