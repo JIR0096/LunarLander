@@ -1,13 +1,19 @@
 package com.example.lunarlander;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import static android.content.Context.SENSOR_SERVICE;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -25,6 +31,8 @@ public class GameView extends SurfaceView implements Runnable {
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
     private Ground ground;
+    private SensorManager gyroscopeSensor;
+    private GameActivity activity = (GameActivity) getContext();
 
     float xDown;
     float yDown;
@@ -50,6 +58,8 @@ public class GameView extends SurfaceView implements Runnable {
         ground = new Ground(x,y);
         surfaceHolder = getHolder();
         paint = new Paint();
+        gameThread = new Thread();
+        gameThread.start();
     }
 
     @Override
@@ -65,7 +75,10 @@ public class GameView extends SurfaceView implements Runnable {
                     break;
                 case -1:
                     Log.w("Crashes =>", String.valueOf(status));
+                    GameActivity.stat = -1;
                     pause();
+
+                    activity.endGame();
                     break;
                 default:
                     Log.d("Not landed =>", String.valueOf(status));
@@ -112,8 +125,8 @@ public class GameView extends SurfaceView implements Runnable {
         playing = false;
         try {
             //stopping the thread
-            gameThread.join();
-        } catch (InterruptedException e) {
+            gameThread.interrupted();
+        } catch (Exception e) {
         }
     }
 
@@ -129,14 +142,25 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
+    public void moveRight(){
+        player.moveLeft(false);
+        player.moveRight(true);
+    }
+    public void moveLeft(){
+        player.moveRight(false);
+        player.moveLeft(true);
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 //stopping the boosting when screen is released
                 player.stopBoosting();
-                player.moveRight(false);
-                player.moveLeft(false);
+                if(!Settings.controlWithGyro) {
+                    player.moveRight(false);
+                    player.moveLeft(false);
+                }
                 //player.stopRotate();
                 break;
             case MotionEvent.ACTION_DOWN:
@@ -144,7 +168,7 @@ public class GameView extends SurfaceView implements Runnable {
                 xDown = motionEvent.getX();
                 yDown = motionEvent.getY();
                 int rotate = 0;
-                if(yDown <= 750){
+                if(!Settings.controlWithGyro && yDown <= 750 ){
                     if(xDown > 500)
                         player.moveRight(true);
                     else
