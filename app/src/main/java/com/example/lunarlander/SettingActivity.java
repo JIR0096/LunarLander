@@ -2,25 +2,53 @@ package com.example.lunarlander;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        if(Settings.controlWithGyro)
+            setActivityBackgroundColor(Color.GREEN);
+        else
+            setActivityBackgroundColor(Color.YELLOW);
     }
-
-    protected void controlByGyro(View view)
+    public void setActivityBackgroundColor(int color) {
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(color);
+    }
+    public void controlByGyro(View view)
     {
-        Settings.controlWithGyro = true;
+        PackageManager packageManager = getPackageManager();
+        boolean gyroExists = packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_GYROSCOPE);
+        if(gyroExists)
+        {
+            Settings.controlWithGyro = true;
+            setActivityBackgroundColor(Color.GREEN);
+            save();
+        }
     }
 
-    protected void controlByTouch(View view)
+    public void controlByTouch(View view)
     {
         Settings.controlWithGyro = false;
+        setActivityBackgroundColor(Color.YELLOW);
+        save();
+    }
+
+    public void save()
+    {
+        SharedPreferences sharedPref= getSharedPreferences("settings", 0);
+        SharedPreferences.Editor editor= sharedPref.edit();
+        editor.putBoolean("control", Settings.controlWithGyro);
+        editor.commit();
     }
 }

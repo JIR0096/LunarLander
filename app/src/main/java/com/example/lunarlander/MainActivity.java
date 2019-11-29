@@ -3,6 +3,7 @@ package com.example.lunarlander;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         //setting the orientation to landscape
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        SharedPreferences sharedPref= getSharedPreferences("settings", 0);
+        Settings.controlWithGyro = sharedPref.getBoolean("control", false);
 
         //getting the button
         buttonPlay = (ImageButton) findViewById(R.id.buttonPlay);
