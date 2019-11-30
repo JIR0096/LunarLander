@@ -71,9 +71,9 @@ public class GameActivity extends Activity {
     protected void endGame(){
         switch (stat){
             case 1:
+                startActivity(new Intent(this, LandedActivity.class));
                 break;
             case -1:
-                startActivity(new Intent(this, CrashedActivity.class));
                 /*AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
                 alertDialog.setTitle("Lose");
                 alertDialog.setMessage("You crashed, therefore you lose");
@@ -84,9 +84,9 @@ public class GameActivity extends Activity {
                             }
                         });
                 alertDialog.show();*/
-                break;
 
             default:
+                startActivity(new Intent(this, CrashedActivity.class));
                break;
 
         }

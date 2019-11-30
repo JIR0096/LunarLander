@@ -21,6 +21,7 @@ public class Player {
     private int maxX;
     private int minX;
 
+
     private double xPosition;
     private double yPosition;
 
@@ -49,15 +50,20 @@ public class Player {
 
         //Getting bitmap from drawable resource
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lander0);
+        Settings.widthOfImage = bitmap.getWidth();
         boosting = false;
     }
 
     public Player(Context context, int screenX, int screenY) {
-        x = 75;
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lander0);
+
+        x = (screenX-bitmap.getWidth())/2;
         y = 50;
         speed = 1;
         this.context = context;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lander0);
+
+        Settings.widthOfImage = bitmap.getWidth();
+        Settings.heightOfScreen = screenY;
 
         maxX = screenX - bitmap.getWidth();
         minX = 0;
@@ -65,6 +71,9 @@ public class Player {
         maxY = screenY - bitmap.getHeight();
         minY = 0;
         boosting = false;
+
+        Settings.difficulty = Difficulty.EASY;
+
     }
 
     public void setRotate(int angle){
@@ -131,9 +140,9 @@ public class Player {
             speed -= 5;
         }
 
-        if(moveR)
+        if(moveR && xPosition < Settings.widthOfImage/2)
             xPosition++;
-        if(moveL)
+        if(moveL && xPosition > -Settings.widthOfImage/2)
             xPosition--;
 
         //controlling the top speed
@@ -146,7 +155,7 @@ public class Player {
             speed = MIN_SPEED;
         }
 
-        x += xPosition;
+        Map.move((int)xPosition);
 
         if(xPosition > 0 && !moveR)
             xPosition--;

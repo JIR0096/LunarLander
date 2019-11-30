@@ -15,7 +15,7 @@ public class CrashedActivity extends AppCompatActivity {
     }
 
     public void again(View view){
-        finish();
+        startActivity(new Intent(this, GameActivity.class));
     }
     public void menu(View view){
         startActivity(new Intent(this, MainActivity.class));

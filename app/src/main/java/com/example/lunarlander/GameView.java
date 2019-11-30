@@ -1,19 +1,13 @@
 package com.example.lunarlander;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import static android.content.Context.SENSOR_SERVICE;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -31,6 +25,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
     private Ground ground;
+    private Background background;
     private SensorManager gyroscopeSensor;
     private GameActivity activity = (GameActivity) getContext();
 
@@ -56,6 +51,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         player = new Player(context, x,y);
         ground = new Ground(x,y);
+        background = new Background();
         surfaceHolder = getHolder();
         paint = new Paint();
         gameThread = new Thread();
@@ -70,18 +66,19 @@ public class GameView extends SurfaceView implements Runnable {
             switch (status)
             {
                 case 1:
-                    Log.w("Landed =>", String.valueOf(status));
+                    //Log.w("Landed =>", String.valueOf(status));
+                    GameActivity.stat = 1;
                     pause();
+                    activity.endGame();
                     break;
                 case -1:
-                    Log.w("Crashes =>", String.valueOf(status));
+                    //Log.w("Crashes =>", String.valueOf(status));
                     GameActivity.stat = -1;
                     pause();
-
                     activity.endGame();
                     break;
                 default:
-                    Log.d("Not landed =>", String.valueOf(status));
+                    //Log.d("Not landed =>", String.valueOf(status));
                     break;
             }
             //to update the frame
@@ -98,6 +95,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void update() {
         player.update();
+        background.update();
     }
 
     private void draw() {
@@ -105,8 +103,9 @@ public class GameView extends SurfaceView implements Runnable {
         {
             canvas = surfaceHolder.lockCanvas();
             canvas.drawColor(Color.BLACK);
-            canvas.drawBitmap(player.getBitmap(), player.getX(), player.getY(), paint);
+            background.draw(canvas);
             ground.draw(canvas);
+            canvas.drawBitmap(player.getBitmap(), player.getX(), player.getY(), paint);
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
@@ -170,9 +169,9 @@ public class GameView extends SurfaceView implements Runnable {
                 int rotate = 0;
                 if(!Settings.controlWithGyro && yDown <= 750 ){
                     if(xDown > 500)
-                        player.moveRight(true);
-                    else
                         player.moveLeft(true);
+                    else
+                        player.moveRight(true);
                 }
                 else
                     player.setBoosting();
