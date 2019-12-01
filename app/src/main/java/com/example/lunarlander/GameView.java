@@ -25,6 +25,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
     private Ground ground;
+    private Stars stars;
     private Background background;
     private SensorManager gyroscopeSensor;
     private GameActivity activity = (GameActivity) getContext();
@@ -52,6 +53,7 @@ public class GameView extends SurfaceView implements Runnable {
         player = new Player(context, x,y);
         ground = new Ground(x,y);
         background = new Background();
+        stars = new Stars(context);
         surfaceHolder = getHolder();
         paint = new Paint();
         gameThread = new Thread();
@@ -69,6 +71,7 @@ public class GameView extends SurfaceView implements Runnable {
                     //Log.w("Landed =>", String.valueOf(status));
                     GameActivity.stat = 1;
                     pause();
+                    Player.score = stars.gotStars()*1000+100;
                     activity.endGame();
                     break;
                 case -1:
@@ -95,7 +98,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void update() {
         player.update();
-        background.update();
+        background.update((int)player.getXPosition());
     }
 
     private void draw() {
@@ -105,6 +108,7 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawColor(Color.BLACK);
             background.draw(canvas);
             ground.draw(canvas);
+            stars.draw(paint,canvas);
             canvas.drawBitmap(player.getBitmap(), player.getX(), player.getY(), paint);
             surfaceHolder.unlockCanvasAndPost(canvas);
         }

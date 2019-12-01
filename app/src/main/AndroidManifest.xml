@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LandedActivity"></activity>
+        <activity android:name=".ChoseDifActivity"></activity>
+        <activity android:name=".HighScoreActivity" />
+        <activity android:name=".LandedActivity" />
         <activity android:name=".SettingsDetailActivity" />
         <activity android:name=".CrashedActivity" />
         <activity android:name=".SettingActivity" />

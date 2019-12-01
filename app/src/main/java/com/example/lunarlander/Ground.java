@@ -81,7 +81,7 @@ public class Ground {
     }
 
     public int landed(int x, int y) {
-        if (x >= podX0 && x <= podX1 && y >= podY && y <= podY + 5)
+        if (x >= podX0 && x <= podX1 && y >= podY-5 && y <= podY + 5)
             return 1;
         else if (y >= podY - 5 && y <= podY + 5)
             return -1;

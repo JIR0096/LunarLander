@@ -14,6 +14,7 @@ public class Background {
     private int width;
     private int widthOfScreen;
     private int height;
+    private int position;
     private List<Star> stars;
     private int x;
     private int moveX;
@@ -42,19 +43,18 @@ public class Background {
         p.setColor(Color.WHITE);
 
         for (Star star : stars) {
-            if (star.x >= x-width && star.x <= x+width)
+            if (star.x >= position && star.x <= position+widthOfScreen) {
                 canvas.drawRect(star.x, star.y, star.x + 5, star.y + 5, p);
+            }
         }
     }
 
-    public void update(){
-        int dif = moveX - Map.x;
-        moveX += dif;
-        x += dif;
-        if(x > width)
-            x = 0;
-        else if(x < 0)
-            x = width;
+    public void update(int move){
+        position+=move;
+        if(position > width)
+            position = position - width;
+        else if(position < 0)
+            position = width + position;
     }
 
 

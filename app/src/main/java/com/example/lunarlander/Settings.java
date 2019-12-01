@@ -10,6 +10,8 @@ public class Settings {
     public static Integer widthOfScreen;
     public static Integer heightOfScreen;
     public static Difficulty difficulty;
+    public static Integer width;
+    public static Integer sizeOfLandArea;
 
 
 }

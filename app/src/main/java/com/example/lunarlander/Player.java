@@ -14,7 +14,9 @@ public class Player {
     //if is trusters on
     private boolean boosting;
 
-    private final int GRAVITY  = -10;
+    private final int GRAVITY  = -5;
+
+    public static int score;
 
     private int maxY;
     private int minY;
@@ -33,12 +35,12 @@ public class Player {
 
     //coordinates
     private int x;
-    private int y;
+    private static int y;
 
     private float originAngle = 0;
 
     //motion speed of the character
-    private int speed = 0;
+    private static int speed = 0;
     private int rotate = 0;
     private Context context;
 
@@ -57,6 +59,8 @@ public class Player {
     public Player(Context context, int screenX, int screenY) {
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lander0);
 
+        score = 0;
+
         x = (screenX-bitmap.getWidth())/2;
         y = 50;
         speed = 1;
@@ -71,9 +75,6 @@ public class Player {
         maxY = screenY - bitmap.getHeight();
         minY = 0;
         boosting = false;
-
-        Settings.difficulty = Difficulty.EASY;
-
     }
 
     public void setRotate(int angle){
@@ -137,7 +138,7 @@ public class Player {
             speed += 2;
         } else {
             //slowing down if not boosting
-            speed -= 5;
+            speed -= 1;
         }
 
         if(moveR && xPosition < Settings.widthOfImage/2)
@@ -184,16 +185,17 @@ public class Player {
 
     public int getLanderX(){ return x+bitmap.getWidth();}
     public int getLanderY(){ return y+bitmap.getHeight();}
+    public double getXPosition(){ return xPosition; }
 
     public int getX() {
         return x;
     }
 
-    public int getY() {
+    public static int getY() {
         return y;
     }
 
-    public int getSpeed() {
+    public static int getSpeed() {
         return speed;
     }
 }

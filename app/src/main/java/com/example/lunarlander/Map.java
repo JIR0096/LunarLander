@@ -12,11 +12,13 @@ public class Map {
 
     public Map() {
         maxX = Settings.widthOfScreen*5;
+        Settings.width = maxX;
         x = maxX / 2;
         Random r = new Random();
-       //area2 = r.nextInt(maxX)+100;
-        area2 = maxX/2;
-        area1 = area2 - Settings.widthOfImage-Settings.widthOfImage;
+        area1 = r.nextInt(maxX);
+        //area1 = maxX/2;
+        area2 = area1+Settings.widthOfImage;
+        Settings.sizeOfLandArea =  area1;
        /* this.originalX = originalX;
         this.originalY = originalX;*/
     }

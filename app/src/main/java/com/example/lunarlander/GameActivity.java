@@ -84,9 +84,9 @@ public class GameActivity extends Activity {
                             }
                         });
                 alertDialog.show();*/
+                startActivity(new Intent(this, CrashedActivity.class));
 
             default:
-                startActivity(new Intent(this, CrashedActivity.class));
                break;
 
         }

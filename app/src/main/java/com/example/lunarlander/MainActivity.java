@@ -36,10 +36,20 @@ public class MainActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
 
         //starting game activity
-        startActivity(new Intent(this, GameActivity.class));
+        Intent intent = new Intent(this, ChoseDifActivity.class);
+        intent.putExtra("page","game");
+        startActivity(intent);
     }
 
     public void setSettings(View v){
-        startActivity(new Intent(this, SettingActivity.class));
+        Intent intent = new Intent(this, SettingActivity.class);
+        startActivity(intent);
+    }
+    public void showHighScore(View v){
+        //startActivity(new Intent(this, HighScoreActivity.class) );
+
+        Intent intent = new Intent(this, ChoseDifActivity.class);
+        intent.putExtra("page","score");
+        startActivity(intent);
     }
 }

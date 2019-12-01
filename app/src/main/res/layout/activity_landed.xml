@@ -20,20 +20,22 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="151dp"
-        android:layout_height="21dp"
+        android:layout_width="264dp"
+        android:layout_height="59dp"
         android:text="You landed! Yeah!"
+        android:textSize="32dp"
         app:layout_constraintBottom_toTopOf="@+id/txtInputName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.652" />
+        app:layout_constraintVertical_bias="0.546" />
 
     <TextView
         android:id="@+id/txtscore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="239dp"
+        android:layout_height="43dp"
         android:layout_marginBottom="72dp"
+        android:textSize="32dp"
         app:layout_constraintBottom_toTopOf="@+id/txtInputName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
