@@ -9,6 +9,7 @@ public class Ground {
 
     private int height;
     private int width;
+    private int heightOfScreen;
     private int podX0 = 400;
     private int podX1 = 600;
     private int podY = 1500;
@@ -21,6 +22,7 @@ public class Ground {
     public Ground(int height, int width) {
         this.height = height;
         this.width = width;
+        this.heightOfScreen = Settings.heightOfScreen;
         Settings.widthOfScreen = width;
         map = new Map();
         areaL = map.getArea1();
@@ -39,7 +41,7 @@ public class Ground {
     public void draw(Canvas canvas) {
         Paint p1 = new Paint();
         p1.setAntiAlias(true);
-        p1.setColor(Color.WHITE);
+        p1.setColor(Color.GRAY);
         p1.setStrokeWidth(10);
 
         int halfWidth = width / 2;
@@ -68,9 +70,10 @@ public class Ground {
         } else if (landAreaLeftL && landAreaRightR) {*/
             podX0 = rightBorder - areaR;
             podX1 = podX0+Settings.widthOfImage ;
+            canvas.drawRect(0,podY,width,heightOfScreen,p1);
             drawLandArea(canvas);
-            canvas.drawLine(0, podY, podX0, podY, p1);
-            canvas.drawLine(podX1, podY, width, podY, p1);
+            /*canvas.drawLine(0, podY, podX0, podY, p1);
+            canvas.drawLine(podX1, podY, width, podY, p1);*/
         /*} else {
             podX0 = 0;
             podX1 = 0;

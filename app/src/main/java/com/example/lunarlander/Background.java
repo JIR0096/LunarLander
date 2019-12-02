@@ -21,7 +21,7 @@ public class Background {
 
     public Background() {
         widthOfScreen = Settings.widthOfScreen;
-        width = Settings.widthOfScreen * 3;
+        width = Settings.widthOfScreen;
         height = Settings.heightOfScreen;
 
         x = width / 2;
@@ -43,18 +43,26 @@ public class Background {
         p.setColor(Color.WHITE);
 
         for (Star star : stars) {
-            if (star.x >= position && star.x <= position+widthOfScreen) {
-                canvas.drawRect(star.x, star.y, star.x + 5, star.y + 5, p);
-            }
+            canvas.drawRect(star.x, star.y, star.x + 5, star.y + 5, p);
         }
     }
 
-    public void update(int move){
-        position+=move;
-        if(position > width)
-            position = position - width;
-        else if(position < 0)
-            position = width + position;
+    public void update(int move) {
+        position = move;
+
+        for (Star star : stars) {
+            if (position > 0) {
+                if(star.x+position > widthOfScreen)
+                    star.x = widthOfScreen-star.x;
+                else
+                    star.x+=position;
+            } else if (position < 0) {
+                if (star.x < position)
+                    star.x = widthOfScreen - star.x;
+                else
+                    star.x += position;
+            }
+        }
     }
 
 

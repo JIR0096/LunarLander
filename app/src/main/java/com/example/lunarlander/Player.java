@@ -14,7 +14,7 @@ public class Player {
     //if is trusters on
     private boolean boosting;
 
-    private final int GRAVITY  = -5;
+    private final int GRAVITY;
 
     public static int score;
 
@@ -50,6 +50,8 @@ public class Player {
         y = 50;
         speed = 1;
 
+        GRAVITY = Settings.difficulty.getGravity();
+
         //Getting bitmap from drawable resource
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lander0);
         Settings.widthOfImage = bitmap.getWidth();
@@ -60,6 +62,7 @@ public class Player {
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lander0);
 
         score = 0;
+        GRAVITY = Settings.difficulty.getGravity();
 
         x = (screenX-bitmap.getWidth())/2;
         y = 50;
@@ -191,7 +194,7 @@ public class Player {
         return x;
     }
 
-    public static int getY() {
+    public int getY() {
         return y;
     }
 

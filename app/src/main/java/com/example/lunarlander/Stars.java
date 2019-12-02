@@ -1,10 +1,12 @@
 package com.example.lunarlander;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,16 +18,20 @@ public class Stars {
     private int height;
     private Random r;
     private List<Star> list;
+    private final MediaPlayer mp;
 
-    public Stars(Context context) {
+    public Stars(Context context, Activity ac) {
         width = Settings.width;
         height = Settings.heightOfScreen;
         r = new Random();
+
         list = new ArrayList<Star>();
         int x = r.nextInt(width);
 
+        mp = MediaPlayer.create(ac, R.raw.collect);
+
         for (int i = 0; i < 3; i++) {
-            int y = r.nextInt(height);
+            int y = r.nextInt(height)-500;
             list.add(new Star(context, x, y));
             x += width / 3;
             if (x > width)
@@ -33,29 +39,35 @@ public class Stars {
         }
     }
 
-    public void draw(Paint paint, Canvas canvas) {
+    public void draw(Paint paint, Canvas canvas, Player player) {
 
-        int halfWidth =  Settings.widthOfScreen/2;
+        int halfWidth = Settings.widthOfScreen / 2;
         int x = Map.x;
-        int y = Player.getY();
         int rightBorder = x + halfWidth;
         int x0;
 
+        int playerX = Map.x;
+        int playerY = player.getY();
+        int playerWidth = player.getBitmap().getWidth();
+        int playerHeight = player.getBitmap().getHeight();
+
         for (Star s : list) {
 
-            if(!s.collected) {
+            if (!s.collected) {
                 x0 = rightBorder - s.getX();
                 canvas.drawBitmap(s.getBitmap(), x0, s.getY(), paint);
-                if (x >= s.getX() && x <= s.getX() + s.getBitmap().getWidth() && y >= s.getY() && y <= s.getY() + s.getBitmap().getHeight())
+                if (((playerX + playerWidth) >= x0 && (playerX <= (x0 + s.getBitmap().getWidth())) && ((playerY + playerHeight) >= s.getY()) && (player.getY() <= (s.getY() + s.getBitmap().getHeight())))) {
                     s.collected = true;
+                    mp.start();
+                }
             }
         }
     }
 
-    public int gotStars(){
+    public int gotStars() {
         int count = 0;
         for (Star s : list) {
-            if(s.collected)
+            if (s.collected)
                 count++;
         }
         return count;
@@ -77,7 +89,7 @@ public class Stars {
             collected = false;
         }
 
-        public Bitmap getBitmap(){
+        public Bitmap getBitmap() {
             return bitmap;
         }
 
@@ -86,7 +98,7 @@ public class Stars {
         }
 
         public int getY() {
-            return x;
+            return y;
         }
     }
 }

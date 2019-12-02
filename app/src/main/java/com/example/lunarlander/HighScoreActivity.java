@@ -71,8 +71,6 @@ public class HighScoreActivity extends Activity {
 
     private void readFromFile(Context context) {
 
-        String ret = "";
-
         try {
             InputStream inputStream = context.openFileInput(dif+".txt");
 
@@ -95,8 +93,6 @@ public class HighScoreActivity extends Activity {
                 inputStream.close();
             }
             print();
-
-            //final ScoreAdapter adapter = new ScoreAdapter(context, R.layout.activity_high_score, list);
         }
         catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());

@@ -1,19 +1,20 @@
 package com.example.lunarlander;
 
-public enum Difficulty{
-    EASY("easy"),
-    MEDIUM("medium"),
-    HARD("hard");
+public enum Difficulty {
+    EASY("easy", -5),
+    MEDIUM("medium", -10),
+    HARD("hard", -10);
 
     private final String name;
+    private final Integer gravity;
 
-    private Difficulty(String s) {
+    private Difficulty(String s, int g) {
         name = s;
+        gravity = g;
     }
 
-    public boolean equalsName(String otherName) {
-        // (otherName == null) check is not needed because name.equals(null) returns false
-        return name.equals(otherName);
+    public int getGravity(){
+        return gravity;
     }
 
     @Override
