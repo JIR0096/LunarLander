@@ -17,8 +17,16 @@ public class Map {
         Random r = new Random();
         area1 = r.nextInt(maxX);
         //area1 = maxX/2;
-        area2 = area1+Settings.widthOfImage;
-        Settings.sizeOfLandArea =  area1;
+        switch (Settings.difficulty){
+            case EASY:
+            case MEDIUM:
+                area2 = area1+2*Settings.widthOfImage;
+                break;
+            case HARD:
+                area2 = area1+Settings.widthOfImage;
+                break;
+        }
+        Settings.sizeOfLandArea =  area2-area1;
        /* this.originalX = originalX;
         this.originalY = originalX;*/
     }

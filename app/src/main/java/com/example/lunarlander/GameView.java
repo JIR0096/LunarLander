@@ -17,17 +17,15 @@ public class GameView extends SurfaceView implements Runnable {
     //the game thread
     private Thread gameThread = null;
 
-    //adding the player to this class
     private Player player;
 
-    //These objects will be used for drawing
     private Paint paint;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
     private Ground ground;
+    //private Pause pause;
     private Stars stars;
     private Background background;
-    private SensorManager gyroscopeSensor;
     private GameActivity activity = (GameActivity) getContext();
 
     float xDown;
@@ -39,7 +37,6 @@ public class GameView extends SurfaceView implements Runnable {
 
         //initializing player object
         player = new Player(context);
-
 
         //initializing drawing objects
         surfaceHolder = getHolder();
@@ -54,6 +51,7 @@ public class GameView extends SurfaceView implements Runnable {
         ground = new Ground(x, y);
         background = new Background();
         stars = new Stars(context, activity);
+        //pause = new Pause(context, y);
         surfaceHolder = getHolder();
         paint = new Paint();
         gameThread = new Thread();
@@ -70,7 +68,7 @@ public class GameView extends SurfaceView implements Runnable {
                     //Log.w("Landed =>", String.valueOf(status));
                     GameActivity.stat = 1;
                     stop();
-                    Player.score = stars.gotStars() * 1000 + 100;
+                    Player.score = stars.gotStars() * 1000 + 1000;
                     activity.endGame();
                     break;
                 case -1:
@@ -106,8 +104,9 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawColor(Color.BLACK);
             background.draw(canvas);
             ground.draw(canvas);
-            stars.draw(paint, canvas, player);
+            stars.draw(paint, canvas);
             canvas.drawBitmap(player.getBitmap(), player.getX(), player.getY(), paint);
+            //pause.draw(canvas,paint);
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
@@ -181,8 +180,8 @@ public class GameView extends SurfaceView implements Runnable {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     //boosting the space jet when screen is pressed
-                    xDown = motionEvent.getX();
-                    yDown = motionEvent.getY();
+                    xDown = motionEvent.getX(i);
+                    yDown = motionEvent.getY(i);
                     int rotate = 0;
                     if (!Settings.controlWithGyro && yDown <= 1500) {
                         if (xDown > 500)

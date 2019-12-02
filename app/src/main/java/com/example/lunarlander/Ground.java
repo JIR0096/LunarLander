@@ -28,6 +28,7 @@ public class Ground {
         areaL = map.getArea1();
         areaR = map.getArea2();
 
+
     }
 
     private void drawLandArea(Canvas canvas) {
@@ -69,7 +70,7 @@ public class Ground {
             canvas.drawLine(podX1, podY, width, podY, p1);
         } else if (landAreaLeftL && landAreaRightR) {*/
             podX0 = rightBorder - areaR;
-            podX1 = podX0+Settings.widthOfImage ;
+            podX1 = podX0+Settings.sizeOfLandArea ;
             canvas.drawRect(0,podY,width,heightOfScreen,p1);
             drawLandArea(canvas);
             /*canvas.drawLine(0, podY, podX0, podY, p1);

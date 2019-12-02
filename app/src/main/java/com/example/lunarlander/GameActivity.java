@@ -47,9 +47,9 @@ public class GameActivity extends Activity {
                 public void onSensorChanged(SensorEvent sensorEvent) {
                     Log.w("SensorEvent", String.valueOf(sensorEvent.values[2]));
                     if(sensorEvent.values[2] > 0.5f) { // anticlockwise
-                        gameView.moveLeft();
-                    } else if(sensorEvent.values[2] < -0.5f) { // clockwise
                         gameView.moveRight();
+                    } else if(sensorEvent.values[2] < -0.5f) { // clockwise
+                        gameView.moveLeft();
                     }
                 }
 

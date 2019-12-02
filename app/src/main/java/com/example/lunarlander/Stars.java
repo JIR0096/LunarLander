@@ -30,8 +30,10 @@ public class Stars {
 
         mp = MediaPlayer.create(ac, R.raw.collect);
 
+        int maxY = Settings.heightOfScreen;
+
         for (int i = 0; i < 3; i++) {
-            int y = r.nextInt(height)-500;
+            int y = r.nextInt(height) - maxY/2;
             list.add(new Star(context, x, y));
             x += width / 3;
             if (x > width)
@@ -39,29 +41,43 @@ public class Stars {
         }
     }
 
-    public void draw(Paint paint, Canvas canvas, Player player) {
+    public void draw(Paint paint, Canvas canvas) {
 
         int halfWidth = Settings.widthOfScreen / 2;
         int x = Map.x;
         int rightBorder = x + halfWidth;
         int x0;
 
-        int playerX = Map.x;
-        int playerY = player.getY();
-        int playerWidth = player.getBitmap().getWidth();
-        int playerHeight = player.getBitmap().getHeight();
-
         for (Star s : list) {
 
             if (!s.collected) {
                 x0 = rightBorder - s.getX();
                 canvas.drawBitmap(s.getBitmap(), x0, s.getY(), paint);
-                if (((playerX + playerWidth) >= x0 && (playerX <= (x0 + s.getBitmap().getWidth())) && ((playerY + playerHeight) >= s.getY()) && (player.getY() <= (s.getY() + s.getBitmap().getHeight())))) {
+            }
+        }
+    }
+
+    public void update(Player player) {
+        int playerX = player.getX();
+        int playerY = player.getY();
+        int halfWidth = Settings.widthOfScreen / 2;
+        int x = Map.x;
+        int playerWidth = player.getBitmap().getWidth();
+        int playerHeight = player.getBitmap().getHeight();
+        int rightBorder = x + halfWidth;
+        int x0;
+
+        for (Star s : list) {
+
+            if (!s.collected) {
+                x0 = rightBorder - s.getX();
+                if (((playerX > x0) && (playerX <= (x0 + s.getBitmap().getWidth())) && ((playerY + playerHeight) >= s.getY()) && (player.getY() <= (s.getY() + s.getBitmap().getHeight())))) {
                     s.collected = true;
                     mp.start();
                 }
             }
         }
+
     }
 
     public int gotStars() {

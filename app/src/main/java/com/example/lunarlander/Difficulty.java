@@ -3,7 +3,7 @@ package com.example.lunarlander;
 public enum Difficulty {
     EASY("easy", -5),
     MEDIUM("medium", -10),
-    HARD("hard", -10);
+    HARD("hard", -15);
 
     private final String name;
     private final Integer gravity;
