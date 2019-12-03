@@ -33,7 +33,7 @@ public class LandedActivity extends Activity {
         EditText nameText = (EditText) findViewById(R.id.txtInputName);
         String name = nameText.getText().toString();
 
-        if (name == null || name == "") {
+        if (name == null || name == "" || name == " ") {
             name = "Wilson";
         }
         String data = name+";"+score+"\n\r";

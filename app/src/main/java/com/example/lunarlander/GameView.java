@@ -24,6 +24,7 @@ public class GameView extends SurfaceView implements Runnable {
     private SurfaceHolder surfaceHolder;
     private Ground ground;
     //private Pause pause;
+    private Fuel fuel;
     private Stars stars;
     private Background background;
     private GameActivity activity = (GameActivity) getContext();
@@ -51,11 +52,13 @@ public class GameView extends SurfaceView implements Runnable {
         ground = new Ground(x, y);
         background = new Background();
         stars = new Stars(context, activity);
+        fuel = new Fuel();
         //pause = new Pause(context, y);
         surfaceHolder = getHolder();
         paint = new Paint();
         gameThread = new Thread();
         gameThread.start();
+
     }
 
     @Override
@@ -63,12 +66,14 @@ public class GameView extends SurfaceView implements Runnable {
         while (playing) {
 
             int status = ground.landed(player.getLanderX(), player.getLanderY());
+            if (fuel.getAmountOfFuel() <= 0)
+                status = -1;
             switch (status) {
                 case 1:
                     //Log.w("Landed =>", String.valueOf(status));
                     GameActivity.stat = 1;
                     stop();
-                    Player.score = stars.gotStars() * 1000 + 1000;
+                    Player.score = (stars.gotStars() * 1000 + 1000) * fuel.getAmountOfFuel() / 100;
                     activity.endGame();
                     break;
                 case -1:
@@ -95,7 +100,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void update() {
         player.update();
+        fuel.update(player.getSpeed());
         background.update((int) player.getXPosition());
+        stars.update(player);
     }
 
     private void draw() {
@@ -106,6 +113,7 @@ public class GameView extends SurfaceView implements Runnable {
             ground.draw(canvas);
             stars.draw(paint, canvas);
             canvas.drawBitmap(player.getBitmap(), player.getX(), player.getY(), paint);
+            fuel.draw(canvas);
             //pause.draw(canvas,paint);
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
@@ -147,10 +155,6 @@ public class GameView extends SurfaceView implements Runnable {
         gameThread.start();
     }
 
-    public void landed() {
-
-    }
-
     public void moveRight() {
         player.moveLeft(false);
         player.moveRight(true);
@@ -166,34 +170,39 @@ public class GameView extends SurfaceView implements Runnable {
 
         int totalPointerCount = motionEvent.getPointerCount();
 
-        for (int i = 0; i < totalPointerCount; i++) {
+        // for (int i = 0; i < totalPointerCount; i++) {
 
-            switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_UP:
-                    //stopping the boosting when screen is released
-                    player.stopBoosting();
-                    if (!Settings.controlWithGyro) {
-                        player.moveRight(false);
-                        player.moveLeft(false);
-                    }
-                    //player.stopRotate();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    //boosting the space jet when screen is pressed
-                    xDown = motionEvent.getX(i);
-                    yDown = motionEvent.getY(i);
-                    int rotate = 0;
-                    if (!Settings.controlWithGyro && yDown <= 1500) {
-                        if (xDown > 500)
-                            player.moveLeft(true);
-                        else
-                            player.moveRight(true);
-                    } else
-                        player.setBoosting();
-                    //player.setRotate(rotate);
-                    break;
-            }
+        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_UP:
+                //stopping the boosting when screen is released
+                player.stopBoosting();
+                if (!Settings.controlWithGyro) {
+                    player.moveRight(false);
+                    player.moveLeft(false);
+                }
+                //player.stopRotate();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                //boosting the space jet when screen is pressed
+                xDown = motionEvent.getX();
+                yDown = motionEvent.getY();
+                int rotate = 0;
+                if (!Settings.controlWithGyro && yDown <= 1500) {
+                    if (xDown > 500)
+                        player.moveLeft(true);
+                    else
+                        player.moveRight(true);
+                } else
+                    player.setBoosting();
+                //player.setRotate(rotate);
+                break;
+            default:
+                player.moveRight(false);
+                player.moveLeft(false);
+                player.stopBoosting();
+                break;
         }
+        //}
         return true;
     }
 }

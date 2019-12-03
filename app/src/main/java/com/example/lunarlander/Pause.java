@@ -11,7 +11,7 @@ public class Pause {
     private int width;
 
     public Pause(Context context, int width) {
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pause);
+        //bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.pause);
         this.width = width;
     }
 

@@ -54,10 +54,6 @@ public class Ground {
         boolean landAreaLeftL = leftBorder - areaL < 0;
         boolean landAreaLeftR = leftBorder - areaR < 0;
 
-        Log.d("x => ", String.valueOf(x));
-        Log.d("LandArea => ", areaL+"|"+areaR);
-
-
        /* if (landAreaRightL && !landAreaRightR) {
             podX0 = rightBorder-areaL;
             podX1 = width;
@@ -85,9 +81,9 @@ public class Ground {
     }
 
     public int landed(int x, int y) {
-        if (x >= podX0 && x <= podX1 && y >= podY-5 && y <= podY + 5)
+        if (x >= podX0 && x <= podX1 && y >= podY + (Settings.difficulty.getGravity()) && y <= podY + (-Settings.difficulty.getGravity()))
             return 1;
-        else if (y >= podY - 5 && y <= podY + 5)
+        else if (y >= podY + (Settings.difficulty.getGravity()) && y <= podY + (-Settings.difficulty.getGravity()))
             return -1;
         else
             return 0;
