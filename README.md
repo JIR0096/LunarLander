@@ -1,6 +1,6 @@
-#TAMZ Project
-##Autor: Tomáš Jiříček
-##Game: Lunar Lander(Modified)
+# TAMZ Project
+## Autor: Tomáš Jiříček
+## Game: Lunar Lander(Modified)
 
 Upravená klasická hra Lunar Lander. 
 Uživatel má na výběr zda chce ovládat loď pomocí gyroskopu nebo dotyku obrazovky, v možnosti menu pod Settings (druhá možnost je defaultní a pokud zařízení nedisponuje gyroskopem tak ani nedovolí ovládání změnit)
