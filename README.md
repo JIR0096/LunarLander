@@ -1,4 +1,3 @@
-# TAMZ Project
 ## Autor: Tomáš Jiříček
 ## Game: Lunar Lander(Modified)
 
